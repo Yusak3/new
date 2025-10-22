@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #data-container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .data-item {
+            margin-bottom: 10px;
+        }
+
+        .key {
+            font-weight: bold;
+        }
+
+        .value {
+            margin-left: 10px;
+            color: #333;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <h2>Tugas Manipulasi data JSON</h2>
+    </div>
+
+    <button id="show">Show Data</button>
+
+    <div id="data-container"></div>
+
+
+    <script>
+        let fetched = null;
+
+        fetch('./data.json').then(res => res.json()).then(data => {
+
+            fetched = data;
+            
+        });
+
+        function showData() {
+
+            let count = 0;
+            for (let key in fetched) {
+                if (count >= 10) break;
+                const item = document.createElement('div');
+                item.className = 'data-item';
+                item.innerHTML = `<span class="key">${key}:</span> <span class="value">${fetched[key]}</span>`;
+                container.appendChild(item);
+                count++;
+            }
+
+        }
+
+        const btn = document.getElementById("show");
+        btn.addEventListener('click', showData);
+
+        const container = document.getElementById('data-container');
+
+    </script>
+</body>
+
+</html>
