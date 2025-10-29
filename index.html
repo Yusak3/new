@@ -1,76 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <style>
-        #data-container {
-            width: 400px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-        }
-
-        .data-item {
-            margin-bottom: 10px;
-        }
-
-        .key {
-            font-weight: bold;
-        }
-
-        .value {
-            margin-left: 10px;
-            color: #333;
-        }
-    </style>
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Sederhana</title>
+    <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
-    <div>
-        <h2>Tugas Manipulasi data JSON</h2>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm" autocomplete="on">
+            <label for="username">Email / Username</label>
+            <input type="text" id="username" name="username" placeholder="admin@gmail.com" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+            <button type="submit" >Masuk</button>
+        </form>
+
+        <div id="message" role="status" aria-live="polite"></div>
+
+        <details class="hint">
+            <summary>Hint kredensial demo</summary>
+            <p>
+                Email: <code>admin@gmail.com</code><br />
+                Password: <code>password123</code>
+            </p>
+        </details>
     </div>
-
-    <button id="show">Show Data</button>
-
-    <div id="data-container"></div>
-
-
     <script>
-        let fetched = null;
+        async function login(event) {
+            event.preventDefault();
 
-        fetch('./data.json').then(res => res.json()).then(data => {
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
 
-            fetched = data;
-            
-        });
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
 
-        function showData() {
+                const data = await response.json();
 
-            let count = 0;
-            for (let key in fetched) {
-                if (count >= 10) break;
-                const item = document.createElement('div');
-                item.className = 'data-item';
-                item.innerHTML = `<span class="key">${key}:</span> <span class="value">${fetched[key]}</span>`;
-                container.appendChild(item);
-                count++;
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error : ', error);
             }
-
         }
-
-        const btn = document.getElementById("show");
-        btn.addEventListener('click', showData);
-
-        const container = document.getElementById('data-container');
+        document.getElementById('loginForm').addEventListener('submit', login);
 
     </script>
 </body>
+
 
 </html>
