@@ -16,13 +16,16 @@ app.post('/api/login', (req,res) => {
     const {username, password} = req.body || {};
 
     if (!username || !password) {
-        return res.status(400).json({message: 'Username dan password harus diisi'});
+        res.status(400).json({message: 'Username dan password harus diisi'});
+        console.log('harus diisi');
     }
 
     if (username === DEMO_USER.username && password === DEMO_USER.password) {
         res.status(200).json({message : 'Login berhasil'});
+        console.log("Login Berhasil");
     } else {
         res.status(401).json({message: 'Username atau password salah'});
+        console.log('Login gagal, username atau password salah');
     }
 });
 
